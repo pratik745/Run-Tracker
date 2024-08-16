@@ -1,4 +1,3 @@
-import com.pratik.convention.configureKotlinJvm
 import com.pratik.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
