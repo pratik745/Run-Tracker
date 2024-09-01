@@ -17,6 +17,9 @@ internal fun Project.configureAndroidCompose(
                 .get()
                 .toString()
         }
+        pluginManager.run {
+            apply(libs.findPlugin("compose-compiler").get().get().pluginId)
+        }
 
         dependencies {
             val bom = libs.findLibrary("androidx.compose.bom").get()
