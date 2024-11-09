@@ -13,6 +13,6 @@ inline fun <T,E:GenericError,R> Result<T,E>.map(map:(T) -> R): Result<R,E> {
     }
 }
 
-fun <T,E: GenericError> Result<T,E>.asEmptyDataResult() : EmptyDataResult<E> = map {  }
+fun <T,E: GenericError> Result<T,E>.asEmptyDataResult() : EmptyResult<E> = map {  }
 
-typealias EmptyDataResult<E> = Result<Unit, E>
+typealias EmptyResult<E> = Result<Unit, E>

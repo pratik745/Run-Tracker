@@ -51,7 +51,7 @@ fun RuniqueTextField(
     title:String?,
     error:String? = null,
     keyBoardType: KeyboardType = KeyboardType.Text,
-    additionalInfo:String
+    additionalInfo:String? = null
 ) {
     var isFocused by remember{ mutableStateOf(false) }
     Column(modifier = modifier) {
@@ -75,7 +75,7 @@ fun RuniqueTextField(
                 )
             }?: run {
                 Text(
-                    text = additionalInfo,
+                    text = additionalInfo?:"",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )

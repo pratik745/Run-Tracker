@@ -1,7 +1,7 @@
 package com.pratik.auth.presentation.register
 
 sealed interface RegisterAction {
-    data object onTogglePasswordVisibilityClick : RegisterAction
-    data object onLoginClick : RegisterAction
-    data object onRegisterClick : RegisterAction
+    data object OnTogglePasswordVisibilityClick : RegisterAction
+    data object OnLoginClick : RegisterAction
+    data object OnRegisterClick : RegisterAction
 }
