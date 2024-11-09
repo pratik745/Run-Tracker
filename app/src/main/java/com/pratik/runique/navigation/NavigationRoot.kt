@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.pratik.auth.presentation.intro.IntroScreenRoot
-import com.pratik.auth.presentation.login.LoginScreen
 import com.pratik.auth.presentation.login.LoginScreenRoot
 import com.pratik.auth.presentation.register.RegisterScreenRoot
 

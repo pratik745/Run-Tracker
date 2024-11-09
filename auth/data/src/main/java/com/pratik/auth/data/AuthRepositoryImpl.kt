@@ -4,7 +4,6 @@ import com.pratik.auth.domain.AuthRepository
 import com.pratik.auth.models.request.LoginRequestModel
 import com.pratik.auth.models.request.RegisterRequestModel
 import com.pratik.auth.models.response.LoginResponseModel
-import com.pratik.core.data.auth.EncryptedSessionStorageImpl
 import com.pratik.core.data.network.post
 import com.pratik.core.domain.authSession.AuthInfo
 import com.pratik.core.domain.authSession.SessionStorage

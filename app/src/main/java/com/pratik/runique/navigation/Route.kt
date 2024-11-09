@@ -13,10 +13,3 @@ object Route {
         const val RUN = "run"
     }
 }
-
-object ScreenName {
-    object Authentication {
-
-    }
-
-}
