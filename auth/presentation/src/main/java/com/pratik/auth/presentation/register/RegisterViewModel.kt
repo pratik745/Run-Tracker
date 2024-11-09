@@ -39,7 +39,6 @@ class RegisterViewModel(
                     updateState { it.copy(isPasswordVisible = !isPasswordVisible) }
                 }
             }
-            else -> Unit
         }
     }
 

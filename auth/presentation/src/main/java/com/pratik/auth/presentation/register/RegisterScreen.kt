@@ -56,7 +56,6 @@ fun RegisterScreenRoot(
 ){
     ObserveEvents(
         registerEvent = viewModel.events,
-        onSignInClick = onSignInClick,
         onSuccessfulRegistration = onSuccessfulRegistration
     )
     RegisterScreen(
@@ -69,7 +68,6 @@ fun RegisterScreenRoot(
 @Composable
 private fun ObserveEvents(
     registerEvent: Flow<RegisterEvent>,
-    onSignInClick: () -> Unit,
     onSuccessfulRegistration: () -> Unit,
 ) {
     val context = LocalContext.current
