@@ -14,6 +14,8 @@ dependencies {
     implementation(libs.timber)
     testImplementation(libs.junit.junit)
 
+    implementation(libs.bundles.koin)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

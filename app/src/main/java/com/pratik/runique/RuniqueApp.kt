@@ -4,6 +4,7 @@ import android.app.Application
 import com.pratik.auth.di.authDataModule
 import com.pratik.auth.presentation.di.authViewModelModule
 import com.pratik.core.data.di.coreDataModule
+import com.pratik.run.presentation.di.runOverviewViewModelModule
 import com.pratik.runique.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,7 +26,8 @@ class RuniqueApp: Application() {
                 authDataModule,
                 authViewModelModule,
                 appModule,
-                coreDataModule
+                coreDataModule,
+                runOverviewViewModelModule
             )
         }
     }
