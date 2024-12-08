@@ -11,5 +11,6 @@ object Route {
     object RunTracker {
         const val RUN_OVERVIEW = "run_overview"
         const val RUN = "run"
+        const val ACTIVE_RUN = "active_run"
     }
 }

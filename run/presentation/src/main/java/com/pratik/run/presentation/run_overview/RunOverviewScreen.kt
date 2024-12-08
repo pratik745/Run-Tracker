@@ -28,19 +28,23 @@ import com.pratik.run.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun RunOverviewScreenRoot() {
+fun RunOverviewScreenRoot(
+    onStartClick: () -> Unit
+) {
     val viewModel: RunOverviewViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     RunOverviewScreen(
         state = state,
-        viewModel::onAction
+        onAction = viewModel::onAction,
+        onStartClick = onStartClick
     )
 }
 
 @Composable
 private fun RunOverviewScreen(
     state: RunOverviewState,
-    onAction: (RunOverviewAction) -> Unit
+    onAction: (RunOverviewAction) -> Unit,
+    onStartClick: () -> Unit
 ) {
     val topBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topBarState)
@@ -80,9 +84,7 @@ private fun RunOverviewScreen(
         floatingActionButton = {
             RuniqueFloatingActionButton(
                 icon = RunIcon ,
-                onClick = {
-                    onAction(RunOverviewAction.OnStartClick)
-                }
+                onClick = { onStartClick.invoke() }
             )
         }
     ) {
@@ -96,7 +98,8 @@ private fun RunOverviewPreview() {
     RuniqueTheme {
         RunOverviewScreen(
             state = RunOverviewState(),
-            onAction = {}
+            onAction = {},
+            onStartClick = {}
         )
     }
 }
