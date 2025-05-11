@@ -34,6 +34,7 @@ import com.pratik.core.presentation.designsystem.components.RuniqueScaffold
 import com.pratik.core.presentation.designsystem.components.RuniqueToolbar
 import com.pratik.run.presentation.R
 import com.pratik.run.presentation.active_run.components.RunDataCard
+import com.pratik.run.presentation.maps.TrackerMap
 import com.pratik.run.presentation.util.hasLocationPermission
 import com.pratik.run.presentation.util.hasPostNotificationPermission
 import com.pratik.run.presentation.util.shouldShowLocationPermissionRationale
@@ -116,7 +117,16 @@ fun ActiveRunScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
-            RunDataCard(
+            TrackerMap(
+                isRunFinished = state.isRunFinished,
+                currentLocation = state.currentLocation,
+                locations = state.runData.locations,
+                onSnapshot = {},
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+
+           RunDataCard(
                 elapsedTime = state.elapsedTime,
                 runData = state.runData,
                 modifier = Modifier

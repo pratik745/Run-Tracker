@@ -1,15 +1,17 @@
 package com.pratik.run.presentation.active_run
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pratik.core.presentation.designsystem.base.BaseViewModel
 import com.pratik.run.domain.RunningTracker
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import timber.log.Timber
+import kotlinx.coroutines.flow.stateIn
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker
@@ -18,36 +20,43 @@ class ActiveRunViewModel(
     private val eventChannel = Channel<ActiveRunEvents>()
     val events = eventChannel.receiveAsFlow()
 
-    private val _hasLocationPermission = MutableStateFlow(false)
+    private val shouldTrack = snapshotFlow { state.value.shouldTrack }
+        .stateIn(viewModelScope, SharingStarted.Lazily,state.value.shouldTrack)
+
+    private val hasLocationPermission = MutableStateFlow(false)
+
+    private val isTracking = combine(
+        shouldTrack,
+        hasLocationPermission
+    ) { shouldTrack, hasLocationPermission ->
+        shouldTrack && hasLocationPermission
+    }.stateIn(viewModelScope, SharingStarted.Lazily,false)
 
     init {
-        _hasLocationPermission
-            .onEach { hasPermission ->
-                if(hasPermission) {
-                    runningTracker.startObservingLocation()
-                } else{
-                    runningTracker.startObservingLocation()
-                }
-            }
-            .launchIn(viewModelScope)
-
-        runningTracker.currentLocation
-            .onEach { location->
-                Timber.d("New Location:$location")
-            }
-            .launchIn(viewModelScope)
+        observeLocationPermission()
+        observeTrackingState()
+        observeRunningTracker()
     }
 
     override fun initState() = ActiveRunState()
 
     override fun onAction(action: ActiveRunAction) {
         when(action) {
-            ActiveRunAction.OnBackClick -> {}
+            ActiveRunAction.OnBackClick -> {
+                updateState { it.copy(shouldTrack = false) }
+            }
             ActiveRunAction.OnFinishRunClick -> {}
-            ActiveRunAction.OnResumeRunClick -> {}
-            ActiveRunAction.OnToggleRunClick -> {}
+            ActiveRunAction.OnResumeRunClick -> {
+                updateState { it.copy(shouldTrack = true) }
+            }
+            ActiveRunAction.OnToggleRunClick -> {
+                updateState { it.copy(
+                    hasStartedRunning = true,
+                    shouldTrack = !it.shouldTrack
+                ) }
+            }
             is ActiveRunAction.SubmitLocationPermissionInfo -> {
-                _hasLocationPermission.value = action.acceptedLocationPermission
+                hasLocationPermission.value = action.acceptedLocationPermission
                 updateState { it.copy(showLocationRationale = action.showLocationRationale) }
             }
             is ActiveRunAction.SubmitNotificationPermissionInfo -> {
@@ -61,5 +70,48 @@ class ActiveRunViewModel(
                 ) }
             }
         }
+    }
+
+    private fun observeLocationPermission() {
+        hasLocationPermission
+            .onEach { hasPermission ->
+                if(hasPermission) {
+                    runningTracker.startObservingLocation()
+                } else{
+                    runningTracker.startObservingLocation()
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeTrackingState() {
+        isTracking
+            .onEach { isTracking ->
+                runningTracker.setIsTracking(isTracking)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeRunningTracker() {
+        runningTracker
+            .currentLocation
+            .onEach { location->
+                updateState { it.copy(currentLocation = location?.location) }
+            }
+            .launchIn(viewModelScope)
+
+        runningTracker
+            .runData
+            .onEach { runData ->
+                updateState { it.copy(runData = runData) }
+            }
+            .launchIn(viewModelScope)
+
+        runningTracker
+            .elapsedTime
+            .onEach { elapsedTime ->
+                updateState { it.copy(elapsedTime = elapsedTime) }
+            }
+            .launchIn(viewModelScope)
     }
 }
