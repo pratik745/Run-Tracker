@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -20,7 +21,8 @@ class ActiveRunViewModel(
     private val eventChannel = Channel<ActiveRunEvents>()
     val events = eventChannel.receiveAsFlow()
 
-    private val shouldTrack = snapshotFlow { state.value.shouldTrack }
+    private val shouldTrack = state
+        .map { it.shouldTrack }
         .stateIn(viewModelScope, SharingStarted.Lazily,state.value.shouldTrack)
 
     private val hasLocationPermission = MutableStateFlow(false)
