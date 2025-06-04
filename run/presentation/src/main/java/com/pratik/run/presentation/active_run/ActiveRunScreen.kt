@@ -35,6 +35,7 @@ import com.pratik.core.presentation.designsystem.components.RuniqueScaffold
 import com.pratik.core.presentation.designsystem.components.RuniqueToolbar
 import com.pratik.run.presentation.R
 import com.pratik.run.presentation.active_run.components.RunDataCard
+import com.pratik.run.presentation.active_run.service.ActiveRunService
 import com.pratik.run.presentation.maps.TrackerMap
 import com.pratik.run.presentation.util.hasLocationPermission
 import com.pratik.run.presentation.util.hasPostNotificationPermission
@@ -43,12 +44,15 @@ import com.pratik.run.presentation.util.shouldShowNotificationPermissionRational
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ActiveRunScreenRoot() {
+fun ActiveRunScreenRoot(
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit
+) {
     val viewModel: ActiveRunViewModel = koinViewModel()
     val state = viewModel.state.collectAsState().value
 
     ActiveRunScreen(
         state = state,
+        onServiceToggle = onServiceToggle,
         onAction = viewModel::onAction
     )
 }
@@ -56,6 +60,7 @@ fun ActiveRunScreenRoot() {
 @Composable
 fun ActiveRunScreen(
     state: ActiveRunState,
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     onAction: (ActiveRunAction) -> Unit
 ) {
     val context = LocalContext.current
@@ -84,10 +89,22 @@ fun ActiveRunScreen(
         )
         val activity = context as ComponentActivity
         if(
-            activity.shouldShowLocationPermissionRationale().not() &&
-            activity.shouldShowNotificationPermissionRationale().not()
+            !activity.shouldShowLocationPermissionRationale() &&
+            !activity.shouldShowNotificationPermissionRationale()
         ) {
             permissionLauncher.requestRuniquePermissions(context)
+        }
+    }
+
+    LaunchedEffect(key1 = state.shouldTrack) {
+        if(context.hasLocationPermission() && state.shouldTrack && !ActiveRunService.isServiceActive) {
+            onServiceToggle(true)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isRunFinished) {
+        if( state.isRunFinished) {
+            onServiceToggle(false)
         }
     }
 
@@ -231,13 +248,13 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
     } else arrayOf()
 
     when {
-        context.hasLocationPermission().not() && context.hasPostNotificationPermission().not() -> {
+        !context.hasLocationPermission() && !context.hasPostNotificationPermission() -> {
             launch(locationPermissions + notificationPermission)
         }
-        context.hasLocationPermission().not() -> {
+        !context.hasLocationPermission() -> {
             launch(locationPermissions)
         }
-        context.hasPostNotificationPermission().not() -> {
+        !context.hasPostNotificationPermission() -> {
             launch(notificationPermission)
         }
     }
@@ -249,6 +266,7 @@ private fun ActiveRunScreenPreview() {
     RuniqueTheme {
         ActiveRunScreen(
             state = ActiveRunState(),
+            onServiceToggle = {},
             onAction = {}
         )
     }

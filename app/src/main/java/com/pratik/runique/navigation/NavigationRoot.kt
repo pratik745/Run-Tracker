@@ -1,16 +1,20 @@
 package com.pratik.runique.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import com.pratik.auth.presentation.intro.IntroScreenRoot
 import com.pratik.auth.presentation.login.LoginScreenRoot
 import com.pratik.auth.presentation.register.RegisterScreenRoot
 import com.pratik.run.presentation.active_run.ActiveRunScreenRoot
+import com.pratik.run.presentation.active_run.service.ActiveRunService
 import com.pratik.run.presentation.run_overview.RunOverviewScreenRoot
+import com.pratik.runique.main.MainActivity
 
 @Composable
 fun NavigationRoot(
@@ -91,8 +95,31 @@ private fun NavGraphBuilder.runGraph(navController: NavHostController) {
                 onStartClick = { navController.navigate(route = Route.RunTracker.ACTIVE_RUN) }
             )
         }
-        composable(route = Route.RunTracker.ACTIVE_RUN) {
-            ActiveRunScreenRoot()
+        composable(
+            route = Route.RunTracker.ACTIVE_RUN,
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = Route.Deeplinks.ACTIVE_RUN_SCREEN
+                }
+            )
+        ) {
+            val context = LocalContext.current
+            ActiveRunScreenRoot(
+                onServiceToggle = { shouldStartService ->
+                    if(shouldStartService) {
+                        context.startService(
+                            ActiveRunService.createStartIntent(
+                                context = context,
+                                activityClass = MainActivity::class.java
+                            )
+                        )
+                    } else {
+                        context.startService(
+                            ActiveRunService.createStopIntent(context)
+                        )
+                    }
+                }
+            )
         }
     }
 }

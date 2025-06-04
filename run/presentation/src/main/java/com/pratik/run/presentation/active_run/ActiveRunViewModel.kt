@@ -1,9 +1,9 @@
 package com.pratik.run.presentation.active_run
 
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.viewModelScope
 import com.pratik.core.presentation.designsystem.base.BaseViewModel
 import com.pratik.run.domain.RunningTracker
+import com.pratik.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,6 +38,12 @@ class ActiveRunViewModel(
         observeLocationPermission()
         observeTrackingState()
         observeRunningTracker()
+        updateState { state ->
+            state.copy(
+                shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTracking.value,
+                hasStartedRunning = ActiveRunService.isServiceActive
+            )
+        }
     }
 
     override fun initState() = ActiveRunState()
@@ -80,7 +86,7 @@ class ActiveRunViewModel(
                 if(hasPermission) {
                     runningTracker.startObservingLocation()
                 } else{
-                    runningTracker.startObservingLocation()
+                    runningTracker.stopObservingLocation()
                 }
             }
             .launchIn(viewModelScope)
@@ -115,5 +121,12 @@ class ActiveRunViewModel(
                 updateState { it.copy(elapsedTime = elapsedTime) }
             }
             .launchIn(viewModelScope)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        if(!ActiveRunService.isServiceActive) {
+            runningTracker.stopObservingLocation()
+        }
     }
 }

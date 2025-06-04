@@ -13,4 +13,8 @@ object Route {
         const val RUN = "run"
         const val ACTIVE_RUN = "active_run"
     }
+
+    object Deeplinks {
+        const val ACTIVE_RUN_SCREEN = "runique://active_run"
+    }
 }
