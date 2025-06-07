@@ -1,6 +1,6 @@
-# Runique
+# Run Tracker
 
-Runique is a multi-module running tracker app for phones.
+Run Tracker is a multi-module running tracker app for phones.
 
 ![Run Feature](https://pl-coding.com/wp-content/uploads/2024/04/run-feature.png)
 <table>
@@ -24,12 +24,12 @@ Runique is a multi-module running tracker app for phones.
 ## How do you run the project?
 
 In order to run the project on your phone, you'll need to first clone it and then add two API keys for:
-1. ... the Runique API (access granted after course purchase)
+1. ... the Run Tracker API
 2. ... Google Maps (needs to be got from Google Cloud Console - instructions in the course)
 
 Then simply include them in `local.properties`:
 ```
-API_KEY=<RUNIQUE_API_KEY>
+API_KEY=<RUN_TRACKER_API_KEY>
 MAPS_API_KEY=<GOOGLE_MAPS_API_KEY>
 ```
 Afterwards, build the project and you're ready to use it.
