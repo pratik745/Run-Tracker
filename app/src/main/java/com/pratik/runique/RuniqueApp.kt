@@ -5,6 +5,7 @@ import com.pratik.auth.di.authDataModule
 import com.pratik.auth.presentation.di.authViewModelModule
 import com.pratik.core.data.di.coreDataModule
 import com.pratik.core.database.di.databaseModule
+import com.pratik.run.data.di.runDataModule
 import com.pratik.run.location.di.locationModule
 import com.pratik.run.network.di.networkModule
 import com.pratik.run.presentation.di.runPresentationModule
@@ -13,10 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class RuniqueApp: Application() {
+class RunningTrackerApp: Application() {
 
     val applicationScope = CoroutineScope(SupervisorJob())
 
@@ -28,7 +30,8 @@ class RuniqueApp: Application() {
 
         startKoin {
             androidLogger()
-            androidContext(this@RuniqueApp)
+            androidContext(this@RunningTrackerApp)
+            workManagerFactory()
             modules(
                 authDataModule,
                 authViewModelModule,
@@ -37,7 +40,8 @@ class RuniqueApp: Application() {
                 runPresentationModule,
                 locationModule,
                 databaseModule,
-                networkModule
+                networkModule,
+                runDataModule
             )
         }
     }

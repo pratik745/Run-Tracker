@@ -2,7 +2,7 @@ package com.pratik.runique.di
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.pratik.runique.RuniqueApp
+import com.pratik.runique.RunningTrackerApp
 import com.pratik.runique.main.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidApplication
@@ -21,7 +21,7 @@ val appModule = module {
     }
 
     single<CoroutineScope> {
-        (androidApplication() as RuniqueApp).applicationScope
+        (androidApplication() as RunningTrackerApp).applicationScope
     }
 
     viewModelOf(::MainViewModel)
