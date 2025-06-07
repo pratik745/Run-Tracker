@@ -47,7 +47,7 @@ class RunOverviewViewModel(
                 }
             }
             RunOverviewAction.OnAnalyticsClick -> Unit
-            RunOverviewAction.OnLogoutClick -> Unit
+            RunOverviewAction.OnLogoutClick -> logout()
             RunOverviewAction.OnStartClick -> Unit
         }
     }
