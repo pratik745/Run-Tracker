@@ -11,12 +11,12 @@ https://github.com/user-attachments/assets/ff49986d-a036-4551-b8d7-66eab98d8166
 ## Tech Used?
 
 - Multi-module architecture
-- Gradle for large-scale projects (version catalogs & convention plugins)
+- MVI + Clean Architecture
+- Version catalogs & convention plugins
 - Authentication systems (OAuth / token refresh)
 - Offline-first development
-- Dynamic feature modules
 - Google Maps SDK
-- Jetpack Compose in multi-module projects
+- Jetpack Compose with multi-modules
 
 ## How do you run the project?
 
