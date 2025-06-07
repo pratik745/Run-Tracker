@@ -65,6 +65,13 @@ class RunningTracker(
         isObservingLocation.value = false
     }
 
+    fun finishRun() {
+        stopObservingLocation()
+        setIsTracking(false)
+        _elapsedTime.value = Duration.ZERO
+        _runData.value = RunData()
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun setTimerFlow() {
         isTracking
