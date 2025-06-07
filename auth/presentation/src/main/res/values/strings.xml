@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="runnique">RunningTracker</string>
-    <string name="welcome_to_runique">Welcome to RunningTracker</string>
+    <string name="runnique">RunTracker</string>
+    <string name="welcome_to_runique">Welcome to RunTracker</string>
     <string name="welcome_description">Track your runs, set goals and achieve fitness milestone with our app.</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
@@ -21,7 +21,7 @@
     <string name="email_already_exist">The email you entered already exist!</string>
     <string name="registration_successful">Registration Successful</string>
     <string name="hi_there">Hi there!</string>
-    <string name="welcome_login_text">Welcome to your ultimate running companion! Track, analyze and conquer your runs.</string>
+    <string name="welcome_login_text">Welcome to your ultimate run tracker companion! Track, analyze and conquer your runs.</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
     <string name="your_logged_in">You are logged In!</string>
     <string name="error_incorrect_email_password">The email or password is incorrect!</string>
