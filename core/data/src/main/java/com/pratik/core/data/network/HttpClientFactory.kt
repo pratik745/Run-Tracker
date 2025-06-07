@@ -69,11 +69,13 @@ class HttpClientFactory(
 
                         if (response is Result.Success) {
                             val newAuthInfo = AuthInfo(
-                                refreshToken = response.data.refreshToken,
                                 accessToken = response.data.accessToken,
-                                userId = response.data.userID
+                                refreshToken = info?.refreshToken ?: "",
+                                userId = info?.userId ?: ""
                             )
+
                             sessionStorage.set(newAuthInfo)
+
                             BearerTokens(
                                 accessToken = newAuthInfo.accessToken,
                                 refreshToken = newAuthInfo.refreshToken

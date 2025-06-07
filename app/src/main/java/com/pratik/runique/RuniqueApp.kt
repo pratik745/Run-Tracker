@@ -6,6 +6,7 @@ import com.pratik.auth.presentation.di.authViewModelModule
 import com.pratik.core.data.di.coreDataModule
 import com.pratik.core.database.di.databaseModule
 import com.pratik.run.location.di.locationModule
+import com.pratik.run.network.di.networkModule
 import com.pratik.run.presentation.di.runPresentationModule
 import com.pratik.runique.di.appModule
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +36,8 @@ class RuniqueApp: Application() {
                 coreDataModule,
                 runPresentationModule,
                 locationModule,
-                databaseModule
+                databaseModule,
+                networkModule
             )
         }
     }

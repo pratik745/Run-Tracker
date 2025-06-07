@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.pratik.core.domain.location.Location
 import com.pratik.core.presentation.designsystem.base.BaseViewModel
 import com.pratik.core.domain.run.Run
+import com.pratik.core.domain.run.RunRepository
+import com.pratik.core.presentation.ui.asUiText
 import com.pratik.run.domain.LocationDataCalculator
 import com.pratik.run.domain.RunningTracker
 import com.pratik.run.presentation.active_run.service.ActiveRunService
@@ -21,7 +23,8 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class ActiveRunViewModel(
-    private val runningTracker: RunningTracker
+    private val runningTracker: RunningTracker,
+    private val runRepository: RunRepository
 ): BaseViewModel<ActiveRunAction,ActiveRunState>() {
 
     private val eventChannel = Channel<ActiveRunEvents>()
@@ -117,9 +120,17 @@ class ActiveRunViewModel(
                 mapPictureUrl = null
             )
 
-            // Save run in repository
-
             runningTracker.finishRun()
+
+            when(val result = runRepository.upsertRun(run, mapPictureBytes)) {
+                is com.pratik.core.domain.util.Result.Error -> {
+                    eventChannel.send(ActiveRunEvents.Error(result.error.asUiText()))
+                }
+                is com.pratik.core.domain.util.Result.Success -> {
+                    eventChannel.send(ActiveRunEvents.RunSaved)
+                }
+            }
+
             updateState { it.copy(
                 isSavingRun = false
             ) }
