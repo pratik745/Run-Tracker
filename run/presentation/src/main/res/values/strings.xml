@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="runique">Runique</string>
+    <string name="runique">RunningTracker</string>
     <string name="analytics">Analytics</string>
     <string name="logout">Logout</string>
     <string name="active_run">Active Run</string>
