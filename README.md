@@ -2,14 +2,11 @@
 
 Run Tracker is a multi-module running tracker app for phones.
 
-![Run Feature](https://pl-coding.com/wp-content/uploads/2024/04/run-feature.png)
-<table>
-  <tr>
-    <td>
-      <img src="https://pl-coding.com/wp-content/uploads/2024/04/auth-feature.png" alt="Auth Feature" width="500"/>
-    </td>
-  </tr>
-</table>
+
+
+https://github.com/user-attachments/assets/ff49986d-a036-4551-b8d7-66eab98d8166
+
+
 
 ## Tech Used?
 
